@@ -103,3 +103,20 @@ const Header = () => {
           onClose={setIsModalOpen}
           key={"mobleSidebar"}
           className={"h-screen"}
+        />
+      )}
+
+      {adminMessageModal && (
+        <div className="fixed top-5 right-5 lg:right-12 ">
+          <MessageList
+            isModalOpen={adminMessageModal}
+            setIsModalOpen={setAdminMessageModal}
+            messages={MessageData}
+          />
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;
