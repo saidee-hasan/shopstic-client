@@ -69,7 +69,7 @@ const MainFooter = () => {
   const contactInfo = [
     {
       icon: <FaMapMarkerAlt className="text-gray-500" />,
-      text: "Dhaka Postogola 1204",
+      text: "Gaibandha 1236",
     },
     {
       icon: <FaEnvelope className="text-gray-500" />,
