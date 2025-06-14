@@ -53,19 +53,19 @@ const RightSide = () => {
 
   return (
     <div className="relative h-full">
-      <div className="pt-6 w-12 h-full bg-white">
-        <div className="flex flex-col gap-5 justify-center items-center">
+      <div className="w-12 h-full bg-widget pt-6">
+        <div className="flex flex-col gap-5 items-center justify-center">
           <div
             className="relative cursor-pointer"
             onClick={() => setIsModalOpen((prev) => !prev)}
           >
             <div>
-              <FaBell className="text-lg text-black" />
+              <FaBell className="text-lg text-white" />
             </div>
             {!MessageLoading && (
               <>
                 {todayMessages?.length ? (
-                  <div className="flex absolute -top-4 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
+                  <div className="absolute -top-4 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
                     <span>{todayMessages?.length}</span>
                   </div>
                 ) : null}
@@ -73,7 +73,7 @@ const RightSide = () => {
             )}
           </div>
           <Link title="working..">
-            <FaQuestionCircle className="text-lg text-black" />
+            <FaQuestionCircle className="text-lg text-white" />
           </Link>
           <div
             onClick={() => {
@@ -82,16 +82,16 @@ const RightSide = () => {
             className="relative cursor-pointer"
           >
             <div>
-              <MdQuestionAnswer className="text-lg text-black" />
+              <MdQuestionAnswer className="text-lg text-white" />
             </div>
             {!QuestionLoading && (
               <>
                 {!isClicked && showSize ? (
-                  <div className="flex absolute -top-4 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
+                  <div className="absolute -top-4 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
                     <span>{showSize}</span>
                   </div>
                 ) : showSize ? (
-                  <div className="flex absolute -top-4 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
+                  <div className="absolute -top-4 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
                     <span>{showSize}</span>
                   </div>
                 ) : null}
@@ -99,7 +99,7 @@ const RightSide = () => {
             )}
           </div>
           <div onClick={handleLogout}>
-            <FaPowerOff className="text-lg text-black cursor-pointer" />
+            <FaPowerOff className="text-lg cursor-pointer text-white" />
           </div>
         </div>
       </div>

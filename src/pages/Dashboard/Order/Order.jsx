@@ -7,20 +7,23 @@ const Order = () => {
   const { handleChange, searchValue } = useSearchDelay();
 
   return (
-    <div>
-      <div className="p-5 flex flex-col gap-5">
-        <div className="flex flex-wrap items-center justify-between gap-5">
-          <span className="font-bold text-xl text-white">Order</span>
-          <div className="flex items-center gap-3 justify-end">
+    <div className="p-5 min-h-screen bg-gray-100">
+      <div className="p-6 mx-auto space-y-6 max-w-7xl bg-white rounded-lg shadow-lg">
+        <div className="flex flex-wrap gap-5 justify-between items-center">
+          <span className="text-2xl font-extrabold text-gray-800">Order</span>
+          <div className="flex flex-wrap gap-3 justify-end items-center">
             <Input
               onChange={handleChange}
               placeholder="Search..."
-              className="bg-white w-full rounded-sm"
+              className="w-64 bg-white rounded-lg border border-gray-300 shadow-sm transition focus:ring-2 focus:ring-green-400 focus:border-green-600"
             />
-            <Button className="w-36 py-2.5">Find Order</Button>
+            <Button className="w-36 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md transition">
+              Find Order
+            </Button>
           </div>
         </div>
-        <div className="shadow-md rounded-md overflow-hidden bg-widget">
+
+        <div className="overflow-hidden bg-white rounded-md shadow-md">
           <OrderTable search={searchValue} />
         </div>
       </div>

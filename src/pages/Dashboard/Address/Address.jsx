@@ -8,11 +8,11 @@ const Address = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section>
-      <div className="p-5 flex flex-col gap-5">
+    <section className="min-h-screen bg-white">
+      <div className="flex flex-col gap-5 p-5">
         <div className="grid grid-cols-2">
-          <span className="font-bold text-xl text-white">Address</span>
-          <div className="flex items-center gap-3 justify-end">
+          <span className="text-xl font-bold text-gray-900">Address</span>
+          <div className="flex gap-3 justify-end items-center">
             <Button
               onClick={() => setIsModalOpen((prev) => !prev)}
               className="w-40"
@@ -21,7 +21,7 @@ const Address = () => {
             </Button>
           </div>
         </div>
-        <div className="shadow-md rounded-md overflow-hidden">
+        <div className="overflow-hidden rounded-md shadow-md">
           <AddressTable />
         </div>
       </div>

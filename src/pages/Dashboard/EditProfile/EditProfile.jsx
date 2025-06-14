@@ -23,9 +23,7 @@ const EditProfile = () => {
   const { handleSubmit, register, setValue } = useForm();
 
   const { user } = useGetUser();
-  const { data: userData, isLoading: userLoading } = useGetUserQuery(
-    user?.email
-  );
+  const { data: userData, isLoading: userLoading } = useGetUserQuery(user?.email);
 
   const dispatch = useDispatch();
 
@@ -70,129 +68,122 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    for (const key in userData) {
-      if (Object.prototype.hasOwnProperty.call(userData, key)) {
-        if (key === "_id") {
-          continue;
-        } else {
+    if (userData) {
+      for (const key in userData) {
+        if (Object.prototype.hasOwnProperty.call(userData, key)) {
+          if (key === "_id") continue;
           setValue(key, userData[key]);
         }
       }
+      setPhoto(userData.photo);
     }
-    setPhoto(userData?.photo);
   }, [setValue, userData]);
 
   return (
-    <div>
-      <div className="p-5 flex flex-col gap-5">
-        <div>
-          <span className="font-bold text-xl text-white">Edit profile</span>
-        </div>
-        <div className="shadow-md bg-widget rounded-md overflow-hidden">
-          {!userLoading ? (
-            <form
-              onSubmit={handleSubmit(handleUpdatePersonalInfo)}
-              className="p-5"
-            >
-              <div className="rounded-full">
-                <label
-                  htmlFor="photo"
-                  className="mb-1 inline-block rounded-full h-32 w-32 relative z-0"
-                >
-                  <div
-                    className="h-32 w-32 border-2 border-accent rounded-full relative flex flex-col items-center justify-center cursor-pointer"
-                    title="Personal photo"
-                  >
-                    {photo ? (
-                      <img
-                        className="w-full h-full rounded-full object-fill"
-                        src={photo}
-                        alt="photo"
-                      />
-                    ) : (
-                      <FaUserAlt className="absolute w-full h-full p-2 rounded-full text-[#047857]" />
-                    )}
-                    {isLoading && (
-                      <div className="absolute h-full w-full bg-black opacity-100 rounded-full">
-                        <ImSpinner9 className="h-full w-full animate-spin text-accent" />
-                      </div>
-                    )}
+    <div className="flex justify-center items-center p-6 min-h-screen bg-gray-50">
+      <div className="p-8 w-full max-w-3xl bg-white rounded-xl shadow-xl">
+        <h2 className="mb-8 text-4xl font-extrabold tracking-tight text-gray-900">
+          Edit Profile
+        </h2>
 
-                    <div className="absolute h-full w-full rounded-full z-50">
-                      <FaUserAlt className="h-full w-full text-[#047857] rounded-full opacity-0 hover:opacity-100 bg-black duration-300 p-2" />
-                    </div>
+        {!userLoading ? (
+          <form
+            onSubmit={handleSubmit(handleUpdatePersonalInfo)}
+            className="space-y-8"
+          >
+            {/* Profile Photo */}
+            <div className="flex justify-center mb-6">
+              <label
+                htmlFor="photo"
+                className="flex overflow-hidden relative justify-center items-center w-36 h-36 rounded-full border-4 border-green-600 shadow-lg transition-all duration-300 cursor-pointer hover:border-green-700"
+                title="Personal photo"
+              >
+                {photo ? (
+                  <img
+                    src={photo}
+                    alt="Profile"
+                    className="object-cover w-full h-full rounded-full"
+                  />
+                ) : (
+                  <FaUserAlt className="w-20 h-20 text-green-600" />
+                )}
+
+                {isLoading && (
+                  <div className="flex absolute inset-0 justify-center items-center bg-black bg-opacity-50 rounded-full">
+                    <ImSpinner9 className="text-5xl text-green-400 animate-spin" />
                   </div>
-                </label>
+                )}
 
-                <Input
-                  onChange={handleImageUpload}
-                  className="hidden"
+                <input
                   id="photo"
                   type="file"
                   accept="image/*"
-                  required={false}
-                  label="Select your photo"
+                  onChange={handleImageUpload}
+                  className="hidden"
                 />
-              </div>
+              </label>
+            </div>
 
-              <div className="grid lg:grid-cols-2 gap-5 mt-5">
-                {inputData?.personalData?.map(
-                  ({
-                    registerName,
-                    label,
-                    isRequired,
-                    type,
-                    data,
-                    placeholder,
-                  }) =>
-                    !data ? (
-                      <Input
-                        {...register(registerName)}
-                        key={registerName}
-                        label={label}
-                        required={isRequired}
-                        type={type}
-                        placeholder={placeholder}
-                        className={"bg-[#1C2822] text-white rounded-sm"}
-                        value={
-                          registerName === "email" ? user?.email : undefined
-                        }
-                        disabled={registerName == "email"}
-                      />
-                    ) : (
-                      <SelectInput
-                        {...register(registerName)}
-                        label={label}
-                        required={isRequired}
-                        key={registerName}
-                        placeholder={placeholder}
-                        className={"bg-[#1C2822] text-white rounded-sm"}
-                      >
-                        <option selected disabled value="">
-                          Select
+            {/* Form Inputs */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {inputData?.personalData?.map(
+                ({
+                  registerName,
+                  label,
+                  isRequired,
+                  type,
+                  data,
+                  placeholder,
+                }) =>
+                  !data ? (
+                    <Input
+                      key={registerName}
+                      {...register(registerName)}
+                      label={label}
+                      required={isRequired}
+                      type={type}
+                      placeholder={placeholder}
+                      className="placeholder-gray-400 text-gray-900 bg-white rounded-lg border border-gray-300 shadow-inner transition duration-300 focus:ring-3 focus:ring-green-400 focus:border-green-600"
+                      value={registerName === "email" ? user?.email : undefined}
+                      disabled={registerName === "email"}
+                    />
+                  ) : (
+                    <SelectInput
+                      key={registerName}
+                      {...register(registerName)}
+                      label={label}
+                      required={isRequired}
+                      placeholder={placeholder}
+                      className="text-gray-900 bg-white rounded-lg border border-gray-300 shadow-inner transition duration-300 focus:ring-3 focus:ring-green-400 focus:border-green-600"
+                    >
+                      <option value="" disabled>
+                        Select
+                      </option>
+                      {data?.map((op) => (
+                        <option key={op} className="capitalize" value={op}>
+                          {op}
                         </option>
-                        {data?.map((op) => (
-                          <option className="capitalize" value={op} key={op}>
-                            {op}
-                          </option>
-                        ))}
-                      </SelectInput>
-                    )
-                )}
-              </div>
-              <div className="mt-5 flex flex-col justify-end items-end">
-                <SubmitButton
-                  isLoading={updateLoading || userLoading}
-                  className="py-2 w-40"
-                >
-                  Save
-                </SubmitButton>
-              </div>
-            </form>
-          ) : (
+                      ))}
+                    </SelectInput>
+                  )
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-end">
+              <SubmitButton
+                isLoading={updateLoading || userLoading}
+                className="px-10 py-3 font-semibold text-white bg-green-600 rounded-xl shadow-lg transition duration-300 hover:bg-green-700 active:bg-green-800 focus:ring-4 focus:ring-green-300"
+              >
+                Save
+              </SubmitButton>
+            </div>
+          </form>
+        ) : (
+          <div className="flex justify-center py-24">
             <LoadingSpinner />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

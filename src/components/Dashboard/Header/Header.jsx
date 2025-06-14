@@ -1,113 +1,108 @@
 import { FaBell, FaHome, FaUserCircle } from "react-icons/fa";
-import { useGetUser } from "../../../hooks/useGetUser";
 import { FaBars } from "react-icons/fa6";
-import { useState } from "react";
-import MobileSidebar from "../../Mobile/Dashboard/MobileSidebar";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { handleIsClicked } from "../../../store/dashboard/features/QnA/qnaSlice";
 import { MdQuestionAnswer } from "react-icons/md";
-import { useQnA } from "../../../hooks/useQnAIndex";
-import MessageList from "../Pages/AdminMessage/MessageList";
-import { useGetAdminMessageQuery } from "../../../store/dashboard/service/adminMessage/adminMessageApi";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import moment from "moment";
+
+import { useGetUser } from "../../../hooks/useGetUser";
+import { useQnA } from "../../../hooks/useQnAIndex";
+import { handleIsClicked } from "../../../store/dashboard/features/QnA/qnaSlice";
+import { useGetAdminMessageQuery } from "../../../store/dashboard/service/adminMessage/adminMessageApi";
+
+import MobileSidebar from "../../Mobile/Dashboard/MobileSidebar";
+import MessageList from "../Pages/AdminMessage/MessageList";
 
 const Header = () => {
   const { user } = useGetUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [adminMessageModal, setAdminMessageModal] = useState(false);
 
-  const { data: MessageData, isLoading: MessageLoading } =
+  const { data: MessageData = [], isLoading: MessageLoading } =
     useGetAdminMessageQuery(user?.email);
 
-  const todayMessages = MessageData?.filter(
+  const todayMessages = MessageData.filter(
     (message) => message?.date === moment().format("L")
   );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { showSize, isClicked } = useQnA();
+  const { showSize } = useQnA();
 
   return (
-    <header className="sticky top-0 z-50 p-3 w-full bg-white">
-      <nav className="flex justify-between items-center px-8 w-full">
-        <div>
-          <FaBars
-            onClick={() => setIsModalOpen((prev) => !prev)}
-            className="block text-2xl text-white lg:hidden"
-          />
-        </div>
+    <header className="sticky top-0 z-50 w-full bg-white border-b shadow-sm">
+      <nav className="flex justify-between items-center px-4 py-2 bg-white sm:px-6 lg:px-8">
+        {/* Mobile menu button */}
+        <FaBars
+          onClick={() => setIsModalOpen((prev) => !prev)}
+          className="block text-2xl text-gray-700 cursor-pointer lg:hidden"
+        />
+
         <div className="flex gap-3 items-center">
+          {/* Notifications */}
           <div
             className="block relative cursor-pointer lg:hidden"
             onClick={() => setAdminMessageModal((prev) => !prev)}
           >
-            <div>
-              <FaBell className="p-2 text-4xl bg-gray-100 rounded-full" />
-            </div>
-            {!MessageLoading && (
-              <>
-                {todayMessages?.length ? (
-                  <div className="flex absolute -top-2 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
-                    <span>{todayMessages?.length}</span>
-                  </div>
-                ) : null}
-              </>
+            <FaBell className="text-3xl bg-gray-100 p-1.5 rounded-full" />
+            {!MessageLoading && todayMessages.length > 0 && (
+              <div className="flex absolute -top-1 -right-1 justify-center items-center w-5 h-5 text-xs text-white rounded-full bg-accent">
+                {todayMessages.length}
+              </div>
             )}
           </div>
+
+          {/* QnA */}
           <div
-            onClick={() => {
-              dispatch(handleIsClicked()), navigate("/dashboard/qna");
-            }}
             className="block relative cursor-pointer lg:hidden"
+            onClick={() => {
+              dispatch(handleIsClicked());
+              navigate("/dashboard/qna");
+            }}
           >
-            <div>
-              <MdQuestionAnswer className="p-2 text-4xl bg-gray-100 rounded-full" />
-            </div>
-            <>
-              {!isClicked && showSize ? (
-                <div className="flex absolute -top-1 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
-                  <span>{showSize}</span>
-                </div>
-              ) : showSize ? (
-                <div className="flex absolute -top-1 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
-                  <span>{showSize}</span>
-                </div>
-              ) : null}
-            </>
+            <MdQuestionAnswer className="text-3xl bg-gray-100 p-1.5 rounded-full" />
+            {showSize > 0 && (
+              <div className="flex absolute -top-1 -right-1 justify-center items-center w-5 h-5 text-xs text-white rounded-full bg-accent">
+                {showSize}
+              </div>
+            )}
           </div>
 
-          <div className="flex gap-3 items-center">
-            <Link to={"/dashboard"}>
-              <FaHome className="p-2 text-4xl bg-gray-100 rounded-full" />
+          {/* Home + User */}
+          <div className="flex gap-2 items-center">
+            <Link to="/dashboard">
+              <FaHome className="text-3xl bg-gray-100 p-1.5 rounded-full" />
             </Link>
             {user?.photo ? (
-              <div className="flex flex-col justify-center items-center p-1 w-10 h-10 bg-gray-100 rounded-full border">
+              <div className="overflow-hidden w-9 h-9 bg-gray-100 rounded-full border">
                 <img
                   src={user?.photo}
-                  alt="personal_image"
-                  className="w-full h-full rounded-full"
+                  alt="User"
+                  className="object-cover w-full h-full"
                 />
               </div>
             ) : (
-              <FaUserCircle className="p-2 text-4xl bg-gray-100 rounded-full" />
+              <FaUserCircle className="text-3xl bg-gray-100 p-1.5 rounded-full" />
             )}
           </div>
         </div>
       </nav>
 
+      {/* Mobile Sidebar */}
       {isModalOpen && (
         <MobileSidebar
           isOpen={isModalOpen}
           onClose={setIsModalOpen}
-          key={"mobleSidebar"}
-          className={"h-screen"}
+          key="mobileSidebar"
+          className="h-screen bg-white"
         />
       )}
 
+      {/* Admin Messages */}
       {adminMessageModal && (
-        <div className="fixed top-5 right-5 lg:right-12">
+        <div className="fixed top-5 right-5 bg-white rounded shadow-lg lg:right-12">
           <MessageList
             isModalOpen={adminMessageModal}
             setIsModalOpen={setAdminMessageModal}

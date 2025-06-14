@@ -14,7 +14,6 @@ import PropTypes from "prop-types";
 
 const OrderTable = ({ search }) => {
   const [currentPage, setCurrentPage] = useState(1);
-
   const { user } = useGetUser();
 
   const query = new URLSearchParams({
@@ -28,26 +27,34 @@ const OrderTable = ({ search }) => {
   const pages = Math.ceil(Math.abs(data?.total ?? 0) / 10);
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-x-auto">
       {!isLoading ? (
-        <div>
-          <Table
-            className="font-normal"
-            tableData={data?.data}
-            columns={[
-              {
-                name: "Images",
-                render: ({ item }) => {
-                  return (
+        <div className="p-4 bg-white rounded-xl shadow-md">
+          <table className="min-w-full text-sm text-left text-gray-700">
+            <thead className="text-gray-600 uppercase bg-gray-100">
+              <tr>
+                <th className="p-2">Images</th>
+                <th className="p-2">Order ID</th>
+                <th className="p-2">Payment Method</th>
+                <th className="p-2">Order Status</th>
+                <th className="p-2">Created At</th>
+                <th className="p-2">Total</th>
+                <th className="p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.data?.map((item) => (
+                <tr key={item._id} className="border-b">
+                  <td className="p-2">
                     <div className="flex gap-2">
                       <PhotoProvider>
-                        {item?.productsInfo?.map((product) => (
-                          <figure key={product?._id}>
-                            <PhotoView src={product?.image}>
-                              <div className="border w-10 h-10 rounded p-1 cursor-pointer">
+                        {item.productsInfo?.map((product) => (
+                          <figure key={product._id}>
+                            <PhotoView src={product.image}>
+                              <div className="p-1 w-10 h-10 rounded border cursor-pointer">
                                 <img
-                                  className="h-full w-full"
-                                  src={product?.image}
+                                  className="object-cover w-full h-full"
+                                  src={product.image}
                                   alt="product_gallery_image"
                                 />
                               </div>
@@ -56,98 +63,45 @@ const OrderTable = ({ search }) => {
                         ))}
                       </PhotoProvider>
                     </div>
-                  );
-                },
-              },
-              {
-                name: "Order ID",
-                render: ({ item }) => {
-                  return (
-                    <div>
-                      <span>#{item?.orderId}</span>
-                    </div>
-                  );
-                },
-              },
-              {
-                name: "Payment Method",
-                render: ({ item }) => {
-                  return (
-                    <div>
-                      <span>{item?.paymentMethod}</span>
-                    </div>
-                  );
-                },
-              },
-              {
-                name: "Order Status",
-                render: ({ item }) => {
-                  return (
-                    <div>
-                      <span className="capitalize">{item?.status}</span>
-                    </div>
-                  );
-                },
-              },
-              {
-                name: "created At",
-                render: ({ item }) => {
-                  return (
-                    <div>
-                      <span className="capitalize">
-                        {moment(item?.createdAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
-                      </span>
-                    </div>
-                  );
-                },
-              },
-              {
-                name: "Total",
-                render: ({ item }) => {
-                  return (
-                    <div>
-                      <span className="font-medium">
-                        {numberWithCommas(
-                          item?.productsInfo?.reduce((total, item) => {
-                            return (total += item?.buyQnt * item?.price);
-                          }, 0) +
-                            parseInt(
-                              item?.deliveryCharge ?? 0
-                            )
-                        )}
-                        TK
-                      </span>
-                    </div>
-                  );
-                },
-              },
-              {
-                name: "Actions",
-                render: ({ item }) => {
-                  return (
-                    <div className="flex gap-3">
+                  </td>
+                  <td className="p-2">#{item.orderId}</td>
+                  <td className="p-2">{item.paymentMethod}</td>
+                  <td className="p-2 capitalize">{item.status}</td>
+                  <td className="p-2">
+                    {moment(item.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  </td>
+                  <td className="p-2 font-medium">
+                    {numberWithCommas(
+                      item.productsInfo?.reduce(
+                        (total, p) => total + p.buyQnt * p.price,
+                        0
+                      ) + parseInt(item.deliveryCharge ?? 0)
+                    )}{" "}
+                    TK
+                  </td>
+                  <td className="p-2">
+                    <div className="flex gap-2">
                       <View item={item} />
-                      {item?.status === "completed" ? (
+                      {item.status === "completed" ? (
                         <ManageReview item={item} />
                       ) : (
-                        item?.status !== "cancelled" && (
+                        item.status !== "cancelled" && (
                           <CancelOrder item={item} />
                         )
                       )}
                     </div>
-                  );
-                },
-              },
-            ]}
-          />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             pages={pages}
             key={"user_order_pagination"}
-            className="justify-end p-5"
+            className="justify-end p-4"
           />
         </div>
       ) : (

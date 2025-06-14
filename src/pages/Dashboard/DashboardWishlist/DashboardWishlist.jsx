@@ -10,54 +10,56 @@ const DashboardWishlist = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-white rounded-md shadow-md">
       {userWishlist?.length ? (
         <div className="flex flex-col gap-5">
           {userWishlist?.map((product) => (
-            <div key={product?._id}>
-              <div className="flex items-center justify-between gap-4 bg-widget rounded-md shadow-md text-white p-5">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <img
-                      className="w-20"
-                      src={product?.image}
-                      alt="product_image"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm" title={product?.title}>
-                      {product?.title?.length > 30
-                        ? `${product?.title.slice(0, 50)}...`
-                        : product?.title}
-                    </span>
-                    <span className="font-bold text-sm">
-                      {numberWithCommas(parseInt(Math.round(product?.price)))}
-                    </span>
-                  </div>
+            <div
+              key={product?._id}
+              className="flex gap-4 justify-between items-center p-4 rounded-md border"
+            >
+              <div className="flex gap-3 items-center">
+                <img
+                  className="object-cover w-20 h-20 rounded border"
+                  src={product?.image}
+                  alt="product_image"
+                />
+                <div className="flex flex-col gap-1">
+                  <span
+                    className="text-sm font-medium text-gray-800"
+                    title={product?.title}
+                  >
+                    {product?.title?.length > 30
+                      ? `${product?.title.slice(0, 50)}...`
+                      : product?.title}
+                  </span>
+                  <span className="text-sm font-bold text-primary">
+                    {numberWithCommas(parseInt(Math.round(product?.price)))} TK
+                  </span>
                 </div>
+              </div>
 
-                <div className="flex items-center justify-center gap-3 -mt-5">
-                  <div
-                    onClick={() => dispatch(add_to_cart(product))}
-                    className={`flex items-center justify-center cursor-pointer w-7 h-7 border rounded-full p-1 hover:bg-danger hover:text-white duration-300`}
-                  >
-                    <FaShoppingBasket />
-                  </div>
-                  <div
-                    onClick={() => dispatch(remove_wishlist(product?._id))}
-                    className="flex items-center justify-center cursor-pointer w-7 h-7 border rounded-full p-1 hover:bg-danger hover:text-white duration-300"
-                  >
-                    <FaTrashAlt />
-                  </div>
-                </div>
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => dispatch(add_to_cart(product))}
+                  className="flex justify-center items-center w-8 h-8 text-gray-600 rounded-full border duration-300 hover:bg-primary hover:text-white"
+                >
+                  <FaShoppingBasket />
+                </button>
+                <button
+                  onClick={() => dispatch(remove_wishlist(product?._id))}
+                  className="flex justify-center items-center w-8 h-8 text-gray-600 rounded-full border duration-300 hover:bg-danger hover:text-white"
+                >
+                  <FaTrashAlt />
+                </button>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="flex gap-5 flex-col items-center justify-center w-full h-80 bg-widget rounded-md shadow-md">
-          <FaClipboard className="text-8xl text-slate" />
-          <span className="font-medium text-xl text-accent capitalize">
+        <div className="flex flex-col justify-center items-center w-full h-80 bg-white rounded-md border">
+          <FaClipboard className="text-8xl text-gray-400" />
+          <span className="text-xl font-medium text-gray-600 capitalize">
             No data found
           </span>
         </div>
