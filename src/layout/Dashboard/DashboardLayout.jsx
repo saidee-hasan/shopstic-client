@@ -12,7 +12,7 @@ const DashboardLayout = () => {
     }}
     >
       <div className={`flex`}>
-        <div className="bg-widget hidden lg:block">
+        <div className="hidden bg-white lg:block">
           <LeftSide />
         </div>
         <div className="w-full h-[calc(100vh)] overflow-y-auto bar-hidden">

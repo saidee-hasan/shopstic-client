@@ -30,26 +30,26 @@ const Header = () => {
   const { showSize, isClicked } = useQnA();
 
   return (
-    <header className="w-full sticky top-0 bg-widget z-50 p-3">
-      <nav className="flex items-center justify-between px-8 w-full">
+    <header className="sticky top-0 z-50 p-3 w-full bg-white">
+      <nav className="flex justify-between items-center px-8 w-full">
         <div>
           <FaBars
             onClick={() => setIsModalOpen((prev) => !prev)}
-            className="block lg:hidden  text-2xl text-white"
+            className="block text-2xl text-white lg:hidden"
           />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
           <div
-            className="relative cursor-pointer block lg:hidden"
+            className="block relative cursor-pointer lg:hidden"
             onClick={() => setAdminMessageModal((prev) => !prev)}
           >
             <div>
-              <FaBell className="text-4xl bg-gray-100 p-2 rounded-full" />
+              <FaBell className="p-2 text-4xl bg-gray-100 rounded-full" />
             </div>
             {!MessageLoading && (
               <>
                 {todayMessages?.length ? (
-                  <div className="absolute -top-2 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
+                  <div className="flex absolute -top-2 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
                     <span>{todayMessages?.length}</span>
                   </div>
                 ) : null}
@@ -60,38 +60,38 @@ const Header = () => {
             onClick={() => {
               dispatch(handleIsClicked()), navigate("/dashboard/qna");
             }}
-            className="relative cursor-pointer block lg:hidden"
+            className="block relative cursor-pointer lg:hidden"
           >
             <div>
-              <MdQuestionAnswer className="text-4xl bg-gray-100 p-2 rounded-full" />
+              <MdQuestionAnswer className="p-2 text-4xl bg-gray-100 rounded-full" />
             </div>
             <>
               {!isClicked && showSize ? (
-                <div className="absolute -top-1 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
+                <div className="flex absolute -top-1 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
                   <span>{showSize}</span>
                 </div>
               ) : showSize ? (
-                <div className="absolute -top-1 w-5 h-5 bg-accent flex flex-col items-center justify-center rounded-full text-white">
+                <div className="flex absolute -top-1 flex-col justify-center items-center w-5 h-5 text-white rounded-full bg-accent">
                   <span>{showSize}</span>
                 </div>
               ) : null}
             </>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex gap-3 items-center">
             <Link to={"/dashboard"}>
-              <FaHome className="text-4xl bg-gray-100 p-2 rounded-full" />
+              <FaHome className="p-2 text-4xl bg-gray-100 rounded-full" />
             </Link>
             {user?.photo ? (
-              <div className="bg-gray-100 w-10 h-10 border p-1 rounded-full flex flex-col items-center justify-center">
+              <div className="flex flex-col justify-center items-center p-1 w-10 h-10 bg-gray-100 rounded-full border">
                 <img
                   src={user?.photo}
                   alt="personal_image"
-                  className="h-full w-full rounded-full"
+                  className="w-full h-full rounded-full"
                 />
               </div>
             ) : (
-              <FaUserCircle className="text-4xl bg-gray-100 p-2 rounded-full" />
+              <FaUserCircle className="p-2 text-4xl bg-gray-100 rounded-full" />
             )}
           </div>
         </div>
@@ -107,7 +107,7 @@ const Header = () => {
       )}
 
       {adminMessageModal && (
-        <div className="fixed top-5 right-5 lg:right-12 ">
+        <div className="fixed top-5 right-5 lg:right-12">
           <MessageList
             isModalOpen={adminMessageModal}
             setIsModalOpen={setAdminMessageModal}

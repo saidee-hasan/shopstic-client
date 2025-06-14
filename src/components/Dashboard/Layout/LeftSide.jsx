@@ -17,7 +17,7 @@ const LeftSide = ({ visibleArrow = true, setIsModalOpen = () => {} }) => {
       <div
         className={`${
           isExtend ? "w-60" : "w-14"
-        } overflow-y-auto bar-hidden duration-300`}
+        } overflow-y-auto bar-hidden duration-300 bg-white`}
       >
         <div className="w-44 h-[60px] flex flex-col items-center justify-center">
           <img className="object-fill px-3" src="/logo.png" alt="logo" />
@@ -28,9 +28,9 @@ const LeftSide = ({ visibleArrow = true, setIsModalOpen = () => {} }) => {
               onClick={() => setIsModalOpen(false)}
               className={`flex items-center gap-3 ${
                 !isExtend && "gap-6 py-3"
-              } px-4 py-2 duration-200 text-sm text-white ${
+              } px-4 py-2 duration-200 text-sm text-black ${
                 pathname == `/dashboard/${link}` || pathname === link
-                  ? "bg-[#047857]"
+                  ? "bg-[#047857] text-white"
                   : ""
               }`}
               to={`${link}`}
